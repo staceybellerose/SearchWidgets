@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_inner_padding">4dp</dimen>
+    <dimen name="widget_size_single">70dp</dimen>
+    <dimen name="widget_size_double">140dp</dimen>
+    <dimen name="widget_corner_radius">12dp</dimen>
+    <dimen name="widget_min_size_single">56dp</dimen>
+
+    <integer name="millis_per_day">86400000</integer>
+</resources>

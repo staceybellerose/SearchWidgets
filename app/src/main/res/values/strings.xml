@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simple Search Widgets</string>
+    <string name="settings_include_header">Include Buttons</string>
+    <string name="settings_search_button">General Search</string>
+    <string name="settings_voice_button">Voice Search</string>
+    <string name="settings_theme_header">Theme Style</string>
+    <string name="settings_settings_header">Settings</string>
+    <string name="settings_small">Use small icons?</string>
+    <string name="settings_small_help_on">Use half-width icons for general and voice search.</string>
+    <string name="settings_small_help_off">Use full width icons for general and voice search.</string>
+    <string name="settings_include_background">Display Background?</string>
+    <string name="settings_background_help_on">A shaded background will be used.</string>
+    <string name="settings_background_help_off">No background will be used.</string>
+    <string name="theme_dark">Dark Theme</string>
+    <string name="theme_light">Light Theme</string>
+    <string name="about_header">About Simple Search Widgets</string>
+    <string name="about_text">by Stacey Adams</string>
+    <string name="install_header">How To Install</string>
+    <string name="install_text">Touch and hold the home screen at the location
+        you would like to place the widget in order to open the "Add to Home Screen" window.\n
+        \nSelect "Widgets" from the list. This will open a list of available widgets.\n
+        \nSelect the SimpleWidgets widget you would like to install.\n
+        \nThe widget will appear on your home screen at your selected location.\n
+        \nTo move the widget to a new location, Touch and hold the widget and
+        drag it to its new location.\n</string>
+    <string name="configure_header">Configure Widget</string>
+    <string name="search_widget_title">Simple Search Button</string>
+    <string name="dialog_search_title">Global Search Not Available</string>
+    <string name="dialog_search_message">Global Search is not currently installed on this device.
+        Please contact your device manufacturer or ROM provider for an update! Google Apps must
+        be available on this device in order to use this widget.</string>
+    <string name="dialog_voice_title">Voice Search Not Available</string>
+    <string name="dialog_voice_message">Voice Search is not currently installed on this device.
+        Please install it from Google Play Store and then set up this widget.</string>
+    <string name="dialog_voice_ok">Go To Google Play Store</string>
+    <string name="dialog_nothing_selected_title">No options selected</string>
+    <string name="dialog_nothing_selected_message">You must select at least one of the button
+        options: General Search and/or Voice Search.</string>
+</resources>

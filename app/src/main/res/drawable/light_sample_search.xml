@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/light_bg"/>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/ic_btn_search_light" />
+    </item>
+
+</layer-list>

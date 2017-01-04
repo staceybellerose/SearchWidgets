@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_search_desc">Perform voice search.</string>
+    <string name="text_search_desc">Perform text search.</string>
+</resources>

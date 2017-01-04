@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:id="@+id/background_dark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/translucent_dark_bg"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/background_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/translucent_light_bg"
+        android:visibility="invisible" />
+
+    <FrameLayout
+        android:id="@+id/shim"
+        android:layout_width="@dimen/widget_inner_padding"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/shim"
+        android:layout_toStartOf="@id/shim"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/text_search_desc"
+        android:src="@drawable/ic_btn_search" />
+
+    <ImageView
+        android:id="@+id/btn_voice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/shim"
+        android:layout_toEndOf="@id/shim"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/voice_search_desc"
+        android:src="@drawable/ic_btn_speak_now" />
+
+</RelativeLayout>

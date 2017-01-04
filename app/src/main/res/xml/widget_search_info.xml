@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:configure="com.staceybellerose.simplewidgets.WidgetConfigureActivity"
+    android:initialLayout="@layout/widget_search"
+    android:minHeight="@dimen/widget_min_size_single"
+    android:minWidth="@dimen/widget_min_size_single"
+    android:previewImage="@drawable/dark_sample_search"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="@integer/millis_per_day"
+    tools:ignore="UnusedAttribute" />
