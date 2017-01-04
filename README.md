@@ -1,14 +1,14 @@
 Simple Search Widgets
 =====================
 
-SearchWidgets is a small app to add Google Search and Google Voice Search icons to
-a user's home screen when they are not using a launcher that displays the Google Search
-bar.
+SearchWidgets is a small Android widget to add Google Search and Google Voice Search
+icons to a user's home screen when they are using a launcher that doesn't display the
+Google Search bar.
 
 License
 =======
 
-    Copyright 2017 Stacey Adams
+    Copyright 2012-2017 Stacey Adams
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
