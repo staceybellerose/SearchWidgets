@@ -1,6 +1,11 @@
 Simple Search Widgets
 =====================
 
+![Build](https://travis-ci.org/staceybellerose/SearchWidgets.svg?branch=master)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/staceybellerose/SearchWidgets/master/LICENSE)
+[![Android](https://img.shields.io/badge/platform-android-green.svg)](https://developer.android.com/develop/index.html)
+[![Latest Version](https://img.shields.io/github/release/staceybellerose/SearchWidgets.svg)](https://github.com/staceybellerose/SearchWidgets/releases)
+
 SearchWidgets is a small Android widget to add Google Search and Google Voice Search
 icons to a user's home screen when they are using a launcher that doesn't display the
 Google Search bar.
