@@ -54,7 +54,7 @@ before_script:
   #- emulator -avd test -no-skin -no-audio -no-window &
 
 script:
-  - ./gradlew clean assembleDebug codeChecks -PdisablePreDex
+  - ./gradlew clean assembleDebug check -PdisablePreDex
   # uncomment the following lines once there are instrumentation tests
   #- android-wait-for-emulator
   #- android list target
