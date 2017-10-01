@@ -28,14 +28,14 @@ import java.util.List;
 
 public class WidgetConfigureActivity extends FragmentActivity
         implements AlertDialogFragment.OnDismissListener {
-    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    private RadioButton buttonDark;
-    private CheckBox checkBoxBackground;
-    private CheckBox checkSearch;
-    private CheckBox checkVoice;
-    private CheckBox checkSmall;
-    private SharedPreferences sPref;
+    private RadioButton mButtonDark;
+    private CheckBox mCheckBoxBackground;
+    private CheckBox mCheckSearch;
+    private CheckBox mCheckVoice;
+    private CheckBox mCheckSmall;
+    private SharedPreferences mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +43,11 @@ public class WidgetConfigureActivity extends FragmentActivity
         setContentView(R.layout.activity_configure);
         setResult(RESULT_CANCELED);
 
-        buttonDark = (RadioButton) findViewById(R.id.radio_dark);
-        checkBoxBackground = (CheckBox) findViewById(R.id.checkbox_background);
-        checkSearch = (CheckBox) findViewById(R.id.include_search);
-        checkVoice = (CheckBox) findViewById(R.id.include_voice);
-        checkSmall = (CheckBox) findViewById(R.id.checkbox_small);
+        mButtonDark = (RadioButton) findViewById(R.id.radio_dark);
+        mCheckBoxBackground = (CheckBox) findViewById(R.id.checkbox_background);
+        mCheckSearch = (CheckBox) findViewById(R.id.include_search);
+        mCheckVoice = (CheckBox) findViewById(R.id.include_voice);
+        mCheckSmall = (CheckBox) findViewById(R.id.checkbox_small);
         final TextView backgroundHelp = (TextView) findViewById(R.id.background_help);
         final TextView smallHelp = (TextView) findViewById(R.id.small_help);
         Button saveButton = (Button) findViewById(R.id.save_button);
@@ -55,16 +55,16 @@ public class WidgetConfigureActivity extends FragmentActivity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
 
-        sPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        checkBoxBackground.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        mCheckBoxBackground.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -75,7 +75,7 @@ public class WidgetConfigureActivity extends FragmentActivity
             }
         });
 
-        checkSearch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        mCheckSearch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -96,10 +96,10 @@ public class WidgetConfigureActivity extends FragmentActivity
 
     public void configureWidget() {
         // Read configuration settings
-        boolean darkTheme = buttonDark.isChecked();
-        boolean includeBackground = checkBoxBackground.isChecked();
-        boolean includeSearch = checkSearch.isChecked();
-        boolean includeVoice = checkVoice.isChecked();
+        boolean darkTheme = mButtonDark.isChecked();
+        boolean includeBackground = mCheckBoxBackground.isChecked();
+        boolean includeSearch = mCheckSearch.isChecked();
+        boolean includeVoice = mCheckVoice.isChecked();
         boolean isSmall;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -122,7 +122,7 @@ public class WidgetConfigureActivity extends FragmentActivity
         int layout;
         if (includeSearch && includeVoice) {
             layout = R.layout.widget_searchvoice;
-            isSmall = checkSmall.isChecked();
+            isSmall = mCheckSmall.isChecked();
         } else if (includeSearch) {
             layout = R.layout.widget_search;
             isSmall = false;
@@ -160,24 +160,24 @@ public class WidgetConfigureActivity extends FragmentActivity
             remoteViews.setViewVisibility(R.id.background_light, View.INVISIBLE);
         }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        appWidgetManager.updateAppWidget(mAppWidgetId, remoteViews);
 
         // Store preferences for widget
-        Editor editor = sPref.edit();
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.THEME + appWidgetId,
+        Editor editor = mSharedPrefs.edit();
+        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.THEME + mAppWidgetId,
                 darkTheme);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.BACKGROUND + appWidgetId,
+        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.BACKGROUND + mAppWidgetId,
                 includeBackground);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_SEARCH + appWidgetId,
+        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_SEARCH + mAppWidgetId,
                 includeSearch);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_VOICE + appWidgetId,
+        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_VOICE + mAppWidgetId,
                 includeVoice);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.SMALL + appWidgetId,
+        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.SMALL + mAppWidgetId,
                 isSmall);
         editor.commit();
 
         Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
     }

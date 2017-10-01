@@ -14,19 +14,15 @@ import com.staceybellerose.simplewidgets.R;
 import com.staceybellerose.simplewidgets.utils.Constants;
 
 public class AlertDialogFragment extends DialogFragment {
-    OnDismissListener listener;
+    private OnDismissListener mListener;
 
-    public interface OnDismissListener {
-        void onAlertFragmentDismissed();
-    }
-
-    public AlertDialogFragment() {}
+    public AlertDialogFragment() { }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (activity instanceof OnDismissListener) {
-            listener = (OnDismissListener) activity;
+            mListener = (OnDismissListener) activity;
         } else {
             throw new RuntimeException("OnDismissListener not implemented in calling activity");
         }
@@ -81,14 +77,15 @@ public class AlertDialogFragment extends DialogFragment {
                                     }
                                 });
                 return builder.create();
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        listener.onAlertFragmentDismissed();
+        mListener.onAlertFragmentDismissed();
     }
 
     public void show(FragmentManager fm) {
@@ -101,5 +98,9 @@ public class AlertDialogFragment extends DialogFragment {
         args.putInt("dialog_type", type);
         alertDialogFragment.setArguments(args);
         return alertDialogFragment;
+    }
+
+    public interface OnDismissListener {
+        void onAlertFragmentDismissed();
     }
 }
