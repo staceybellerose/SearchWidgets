@@ -16,25 +16,50 @@ android:
     # Additional components
     - extra-android-m2repository
 
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-21
-
 env:
   global:
    # install timeout in minutes (2 minutes by default)
     - ADB_INSTALL_TIMEOUT=8
+
+env:
+  matrix:
+    # uncomment the following lines to test the various emulators for speed
+    #- API=android-15 ABI=armeabi-v7a
+    - API=android-16 ABI=armeabi-v7a
+    #- API=android-17 ABI=armeabi-v7a
+    #- API=android-18 ABI=armeabi-v7a
+    #- API=android-19 ABI=armeabi-v7a
+    #- API=android-21 ABI=armeabi-v7a
+    #- API=android-22 ABI=armeabi-v7a
+    #- API=android-24 ABI=armeabi-v7a
+    #- API=android-24 ABI=arm64-v8a
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 before_install:
  - chmod +x gradlew
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+  # uncomment the following lines once there are instrumentation tests
+  #- echo no | android create avd --force --name test --target $API --abi $ABI
+  #- emulator -avd test -no-skin -no-audio -no-window &
 
 script:
-  - android list target
-  - ./gradlew connectedAndroidTest -PdisablePreDex
+  - ./gradlew clean assembleDebug codeChecks -PdisablePreDex
+  # uncomment the following lines once there are instrumentation tests
+  #- android-wait-for-emulator
+  #- android list target
+  #- adb shell input keyevent 82 &
+  #- ./gradlew connectedDebugAndroidTest -PdisablePreDex --continue --stacktrace
+
+after_success:
+  #- bash <(curl -s https://codecov.io/bash)
