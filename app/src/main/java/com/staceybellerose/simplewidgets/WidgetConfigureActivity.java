@@ -22,23 +22,42 @@ import android.widget.TextView;
 
 import com.staceybellerose.simplewidgets.fragments.AlertDialogFragment;
 import com.staceybellerose.simplewidgets.providers.SearchWidgetProvider;
-import com.staceybellerose.simplewidgets.utils.Constants;
 
 import java.util.List;
 
+/**
+ * Activity to configure a Home Screen Widget
+ */
 public class WidgetConfigureActivity extends FragmentActivity
         implements AlertDialogFragment.OnDismissListener {
+    /**
+     * The Widget ID to be configured
+     */
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
+    /**
+     * Radio Button indicating Light or Dark Theme
+     */
     private RadioButton mButtonDark;
+    /**
+     * Checkbox indicating whether to display a shaded background
+     */
     private CheckBox mCheckBoxBackground;
+    /**
+     * Checkbox indicating whether to display the General Search icon
+     */
     private CheckBox mCheckSearch;
+    /**
+     * Checkbox indicating whether to display the Voice Search icon
+     */
     private CheckBox mCheckVoice;
+    /**
+     * Checkbox indicating whether to use small icons
+     */
     private CheckBox mCheckSmall;
-    private SharedPreferences mSharedPrefs;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
         setResult(RESULT_CANCELED);
@@ -62,11 +81,9 @@ public class WidgetConfigureActivity extends FragmentActivity
             finish();
         }
 
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         mCheckBoxBackground.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 if (isChecked) {
                     backgroundHelp.setText(R.string.settings_background_help_on);
                 } else {
@@ -77,7 +94,7 @@ public class WidgetConfigureActivity extends FragmentActivity
 
         mCheckSearch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 if (isChecked) {
                     smallHelp.setText(R.string.settings_small_help_on);
                 } else {
@@ -88,12 +105,15 @@ public class WidgetConfigureActivity extends FragmentActivity
 
         saveButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View view) {
                 configureWidget();
             }
         });
     }
 
+    /**
+     * Configure the widget based on the settings selected
+     */
     public void configureWidget() {
         // Read configuration settings
         boolean darkTheme = mButtonDark.isChecked();
@@ -108,13 +128,11 @@ public class WidgetConfigureActivity extends FragmentActivity
         boolean isSearchAvailable = isIntentAvailable(SearchWidgetProvider.GLOBAL_SEARCH);
         boolean isVoiceAvailable = isIntentAvailable(SearchWidgetProvider.VOICE_SEARCH);
         if (includeSearch && !isSearchAvailable) {
-            AlertDialogFragment fragment = AlertDialogFragment.newInstance(Constants.DIALOG_NO_SEARCH_APP);
-            fragment.show(fragmentManager);
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_SEARCH_APP).show(fragmentManager);
             return;
         }
         if (includeVoice && !isVoiceAvailable) {
-            AlertDialogFragment fragment = AlertDialogFragment.newInstance(Constants.DIALOG_NO_VOICE_APP);
-            fragment.show(fragmentManager);
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_VOICE_APP).show(fragmentManager);
             return;
         }
 
@@ -130,8 +148,7 @@ public class WidgetConfigureActivity extends FragmentActivity
             layout = R.layout.widget_voice;
             isSmall = false;
         } else {
-            AlertDialogFragment fragment = AlertDialogFragment.newInstance(Constants.DIALOG_NO_OPTIONS_SELECTED);
-            fragment.show(fragmentManager);
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED).show(fragmentManager);
             return;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), layout);
@@ -163,7 +180,8 @@ public class WidgetConfigureActivity extends FragmentActivity
         appWidgetManager.updateAppWidget(mAppWidgetId, remoteViews);
 
         // Store preferences for widget
-        Editor editor = mSharedPrefs.edit();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Editor editor = sharedPrefs.edit();
         editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.THEME + mAppWidgetId,
                 darkTheme);
         editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.BACKGROUND + mAppWidgetId,
@@ -182,11 +200,20 @@ public class WidgetConfigureActivity extends FragmentActivity
         finish();
     }
 
+    /**
+     * Close the Activity when the AlertDialogFragment is dismissed
+     */
     public void onAlertFragmentDismissed() {
         finish();
     }
 
-    public boolean isIntentAvailable(String action) {
+    /**
+     * Check to see if an Intent is available for a given Action
+     *
+     * @param action The Action to check
+     * @return whether an Intent is available for the Action provided
+     */
+    public boolean isIntentAvailable(final String action) {
         final PackageManager packageManager = getPackageManager();
         final Intent intent = new Intent(action);
         List<ResolveInfo> list = packageManager.queryIntentActivities(intent,

@@ -12,27 +12,60 @@ import android.widget.RemoteViews;
 
 import com.staceybellerose.simplewidgets.R;
 
+/**
+ * Class to implement the Search Widget
+ */
 @SuppressWarnings("InlinedApi")
 public class SearchWidgetProvider extends AppWidgetProvider {
+    /**
+     * Shared Preference key prefix for widget settings
+     */
     public static final String WIDGET = "widget_";
+    /**
+     * Shared Preference key prefix for widget theme setting
+     */
     public static final String THEME = "theme_";
+    /**
+     * Shared Preference key prefix for widget background setting
+     */
     public static final String BACKGROUND = "background_";
+    /**
+     * Shared Preference key prefix for widget Global Search setting
+     */
     public static final String INCLUDE_SEARCH = "include_search_";
+    /**
+     * Shared Preference key prefix for widget Voice Search setting
+     */
     public static final String INCLUDE_VOICE = "include_voice_";
+    /**
+     * Shared Preference key prefix for widget Small Icon setting
+     */
     public static final String SMALL = "small_";
+    /**
+     * Action to activate Global Search
+     */
     public static final String GLOBAL_SEARCH = android.app.SearchManager.INTENT_ACTION_GLOBAL_SEARCH;
+    /**
+     * Action to activate Voice Search
+     */
     public static final String VOICE_SEARCH = android.speech.RecognizerIntent.ACTION_WEB_SEARCH;
 
     @Override
-    public void onDeleted(Context context, int[] appWidgetIds) {
+    public void onDeleted(final Context context, final int[] appWidgetIds) {
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(context);
         for (int appWidgetId : appWidgetIds) {
-            sPref.edit().remove(WIDGET + THEME + appWidgetId).commit();
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.remove(WIDGET + THEME + appWidgetId);
+            editor.remove(WIDGET + BACKGROUND + appWidgetId);
+            editor.remove(WIDGET + INCLUDE_SEARCH + appWidgetId);
+            editor.remove(WIDGET + INCLUDE_VOICE + appWidgetId);
+            editor.remove(WIDGET + SMALL + appWidgetId);
+            editor.commit();
         }
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(context);
         for (int appWidgetId : appWidgetIds) {
             boolean darkTheme = sPref.getBoolean(WIDGET + THEME + appWidgetId, true);
@@ -78,17 +111,36 @@ public class SearchWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static PendingIntent getSearchIntent(Context context) {
+    /**
+     * Get a PendingIntent for Global Search
+     *
+     * @param context The Context
+     * @return a PendingIntent to launch Global Search
+     */
+    public static PendingIntent getSearchIntent(final Context context) {
         Intent intent = new Intent(GLOBAL_SEARCH);
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    public static PendingIntent getVoiceIntent(Context context) {
+    /**
+     * Get a PendingIntent for Voice Search
+     *
+     * @param context The Context
+     * @return a PendingIntent to launch Voice Search
+     */
+    public static PendingIntent getVoiceIntent(final Context context) {
         Intent intent = new Intent(VOICE_SEARCH);
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    public static int getSearchImage(boolean darkTheme, boolean small) {
+    /**
+     * Get the Search image based on widget configuration
+     *
+     * @param darkTheme Flag indicating whether to use the Dark theme
+     * @param small Flag indicating whether to use Small icons
+     * @return Drawable Resource ID of the appropriate Search image
+     */
+    public static int getSearchImage(final boolean darkTheme, final boolean small) {
         if (small) {
             return darkTheme
                     ? R.drawable.ic_btn_search_small
@@ -100,7 +152,14 @@ public class SearchWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static int getVoiceImage(boolean darkTheme, boolean small) {
+    /**
+     * Get the Voice Search image based of widget configuration
+     *
+     * @param darkTheme Flag indicating whether to use the Dark theme
+     * @param small Flag indicating whether to use Small icons
+     * @return Drawable Resource ID of the appropriate Search image
+     */
+    public static int getVoiceImage(final boolean darkTheme, final boolean small) {
         if (small) {
             return darkTheme
                     ? R.drawable.ic_btn_speak_now_small
