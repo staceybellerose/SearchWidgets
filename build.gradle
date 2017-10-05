@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+ext {
+    appName = "SearchWidgets"
+}
+
 allprojects {
     repositories {
         jcenter()

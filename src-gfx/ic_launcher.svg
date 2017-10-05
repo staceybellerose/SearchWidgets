@@ -12,11 +12,11 @@
    height="512"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.92.0 r15299"
    sodipodi:docname="ic_launcher.svg"
-   inkscape:export-filename="C:\home\projects\SearchWidgets\app\src\main\res\drawable-xhdpi\ic_launcher.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="C:\home\projects\SearchWidgets\playStoreGfx\ic_launcher.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -26,12 +26,12 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="718"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
      id="namedview109"
      showgrid="false"
      inkscape:zoom="1"
-     inkscape:cx="170.52789"
+     inkscape:cx="8.02789"
      inkscape:cy="270.62828"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
@@ -811,7 +811,7 @@
     <dc:format>image/svg+xml</dc:format>
     <dc:type
        rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:title></dc:title>
+    <dc:title />
   </cc:Work>
 </rdf:RDF>
 </metadata>

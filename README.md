@@ -7,9 +7,15 @@ Simple Search Widgets
 [![Latest Version](https://img.shields.io/github/release/staceybellerose/SearchWidgets.svg)](https://github.com/staceybellerose/SearchWidgets/releases)
 [![Known Vulnerabilities](https://snyk.io/test/github/staceybellerose/searchwidgets/badge.svg)](https://snyk.io/test/github/staceybellerose/searchwidgets)
 
-SearchWidgets is a small Android widget to add Google Search and Google Voice Search
-icons to a user's home screen when they are using a launcher that doesn't display the
-Google Search bar.
+Version 2 of Simple Search Widgets! Now resizable!
+
+Are you tired of looking at the Google Search widget, but still want easy access to searching? This widget is for you. With resizable yet tiny widgets, this minimalist widget adds a simple icon to activate either Global Search or Voice Search.
+
+Note: If you want to remove the Google Search bar from ICS or above, you will need to install an alternative launcher app, such as Nova Launcher. Then, add this widget to get back search functionality on your home screen.
+
+This widget looks great with other minimalist widgets, such as Beautiful Widgets, Eye In Sky Weather, Circle Battery Widget, and Minimalist Text.
+
+To use the Voice Search widget, you must have an app installed to handle voice searching. Google's Voice Search app is perfect for this, as is any other app that handles the android.speech.RecognizerIntent.ACTION_WEB_SEARCH Intent action.
 
 License
 =======
