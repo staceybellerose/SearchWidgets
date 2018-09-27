@@ -22,8 +22,7 @@
         </receiver>
         <activity
             android:name=".WidgetConfigureActivity"
-            android:label="@string/configure_header"
-            android:theme="@style/MyTheme">
+            android:label="@string/configure_header">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

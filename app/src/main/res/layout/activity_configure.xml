@@ -1,156 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:theme="@style/MyTheme"
-    tools:context=".WidgetConfigureActivity">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:id="@+id/coordinator_layout"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context=".WidgetConfigureActivity">
 
-    <TextView
-        android:id="@+id/header_bar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/dark_grey"
-        android:drawableLeft="@drawable/ic_launcher"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_launcher"
-        android:gravity="center_vertical"
-        android:text="@string/configure_header"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:theme="@style/MyTheme.AppBarOverlay">
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@android:string/ok" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorAccent"
+            app:navigationIcon="@drawable/ic_launcher"
+            app:popupTheme="@style/MyTheme.PopupOverlay"
+            app:title="@string/configure_header"/>
 
-    <ScrollView
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/save_button"
-        android:layout_below="@id/header_bar"
-        android:fillViewport="true">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@android:string/ok"/>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_above="@id/save_button"
+            android:fillViewport="true">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="@string/settings_include_header"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/include_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/settings_search_button" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/settings_include_header"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-            <CheckBox
-                android:id="@+id/include_voice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/settings_voice_button" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_margin="4dp"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="@string/settings_theme_header"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <RadioGroup
-                android:id="@+id/themeGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
-
-                <RadioButton
-                    android:id="@+id/radio_dark"
+                <CheckBox
+                    android:id="@+id/include_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:drawableLeft="@drawable/dark_sample_search"
-                    android:drawablePadding="16dp"
-                    android:drawableStart="@drawable/dark_sample_search"
-                    android:text="@string/theme_dark" />
+                    android:text="@string/settings_search_button"/>
 
-                <RadioButton
-                    android:id="@+id/radio_light"
+                <CheckBox
+                    android:id="@+id/include_voice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/settings_voice_button"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_margin="4dp"
+                    android:background="@color/colorAccentDark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:drawableLeft="@drawable/light_sample_search"
-                    android:drawablePadding="16dp"
-                    android:drawableStart="@drawable/light_sample_search"
-                    android:text="@string/theme_light" />
-            </RadioGroup>
+                    android:gravity="center"
+                    android:text="@string/settings_theme_header"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_margin="4dp"
-                android:background="@color/dark_grey" />
+                <RadioGroup
+                    android:id="@+id/themeGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="@string/settings_settings_header"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <RadioButton
+                        android:id="@+id/radio_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/dark_sample_search"
+                        android:drawablePadding="16dp"
+                        android:drawableStart="@drawable/dark_sample_search"
+                        android:text="@string/theme_dark"/>
 
-            <CheckBox
-                android:id="@+id/checkbox_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/settings_small" />
+                    <RadioButton
+                        android:id="@+id/radio_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:drawableLeft="@drawable/light_sample_search"
+                        android:drawablePadding="16dp"
+                        android:drawableStart="@drawable/light_sample_search"
+                        android:text="@string/theme_light"/>
+                </RadioGroup>
 
-            <TextView
-                android:id="@+id/small_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/settings_small_help_on"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_margin="4dp"
+                    android:background="@color/colorAccentDark"/>
 
-            <CheckBox
-                android:id="@+id/checkbox_background"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/settings_include_background" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/settings_settings_header"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-            <TextView
-                android:id="@+id/background_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/settings_background_help_on"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkbox_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/settings_small"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/small_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/settings_small_help_on"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-    </ScrollView>
+                <CheckBox
+                    android:id="@+id/checkbox_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/settings_include_background"/>
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/background_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/settings_background_help_on"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

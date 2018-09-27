@@ -8,8 +8,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Activity to configure a Home Screen Widget
  */
-public class WidgetConfigureActivity extends FragmentActivity
+public class WidgetConfigureActivity extends AppCompatActivity
         implements AlertDialogFragment.OnDismissListener {
     /**
      * The Widget ID to be configured
@@ -61,6 +62,8 @@ public class WidgetConfigureActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
         setResult(RESULT_CANCELED);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mButtonDark = findViewById(R.id.radio_dark);
         mCheckBoxBackground = findViewById(R.id.checkbox_background);

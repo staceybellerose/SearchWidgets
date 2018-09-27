@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyTheme" parent="@android:style/Theme.Black.NoTitleBar" />
-    <style name="MyTheme.Dialog" parent="@android:style/Theme.Dialog" />
+    <style name="MyThemeBase" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/md_primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/md_secondary_text_dark</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorForeground">@color/md_primary_text_dark</item>
+        <item name="android:textColorPrimaryInverse">@color/md_primary_text_light</item>
+        <item name="android:textColorSecondaryInverse">@color/md_secondary_text_light</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
+
+    <style name="MyTheme" parent="@style/MyThemeBase"/>
+
+    <style name="MyTheme.Dialog" parent="@style/Theme.AppCompat.Dialog"/>
+
+    <style name="MyTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="MyTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
 </resources>

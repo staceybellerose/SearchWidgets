@@ -1,54 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AboutActivity" >
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:id="@+id/coordinator_layout"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context=".AboutActivity">
 
-    <TextView
-        android:id="@+id/textView0"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/dark_grey"
-        android:drawableLeft="@drawable/ic_launcher"
-        android:drawableStart="@drawable/ic_launcher"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:text="@string/about_header"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:theme="@style/MyTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorAccent"
+            app:navigationIcon="@drawable/ic_launcher"
+            app:popupTheme="@style/MyTheme.PopupOverlay"
+            app:title="@string/about_header"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:id="@+id/RelativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="16dp" >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_launcher" />
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView1"
                 android:gravity="center"
                 android:text="@string/about_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -58,7 +55,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:text="@string/install_header"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
                 android:id="@+id/textView4"
@@ -68,7 +65,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:text="@string/install_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <Button
                 android:id="@+id/button1"
@@ -77,8 +74,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/textView4"
                 android:layout_centerHorizontal="true"
-                android:text="@android:string/ok" />
+                android:layout_marginTop="16dp"
+                android:text="@android:string/ok"/>
         </RelativeLayout>
     </ScrollView>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
