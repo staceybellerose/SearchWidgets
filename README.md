@@ -17,6 +17,10 @@ This widget looks great with other minimalist widgets, such as Beautiful Widgets
 
 To use the Voice Search widget, you must have an app installed to handle voice searching. Google's Voice Search app is perfect for this, as is any other app that handles the android.speech.RecognizerIntent.ACTION_WEB_SEARCH Intent action.
 
+The app is available for download on Google Play.
+
+<a href='https://play.google.com/store/apps/details?id=com.staceybellerose.simplewidgets&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='323px' height='125px'/></a>
+
 License
 =======
 
@@ -33,3 +37,5 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+Google Play and the Google Play logo are trademarks of Google LLC.
