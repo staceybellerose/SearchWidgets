@@ -60,7 +60,7 @@ public class SearchWidgetProvider extends AppWidgetProvider {
             editor.remove(WIDGET + INCLUDE_SEARCH + appWidgetId);
             editor.remove(WIDGET + INCLUDE_VOICE + appWidgetId);
             editor.remove(WIDGET + SMALL + appWidgetId);
-            editor.commit();
+            editor.apply();
         }
     }
 

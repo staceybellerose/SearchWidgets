@@ -15,15 +15,14 @@
     <string name="theme_dark">Dark Theme</string>
     <string name="theme_light">Light Theme</string>
     <string name="about_header">About Simple Search Widgets</string>
-    <string name="about_text">by Stacey Adams</string>
+    <string name="about_text">Developed by Stacey\'s App Boutique</string>
     <string name="install_header">How To Install</string>
-    <string name="install_text">Touch and hold the home screen at the location
-        you would like to place the widget in order to open the "Add to Home Screen" window.\n
-        \nSelect "Widgets" from the list. This will open a list of available widgets.\n
+    <string name="install_text">Touch the All Apps icon on the Home screen.\n
+        \nSelect the Widgets tab at the top of the screen. This will open a list of available widgets.\n
         \nSelect the SimpleWidgets widget you would like to install.\n
         \nThe widget will appear on your home screen at your selected location.\n
         \nTo move the widget to a new location, Touch and hold the widget and
-        drag it to its new location.\n</string>
+        drag it to its new location.</string>
     <string name="configure_header">Configure Widget</string>
     <string name="search_widget_title">Simple Search Button</string>
     <string name="dialog_search_title">Global Search Not Available</string>

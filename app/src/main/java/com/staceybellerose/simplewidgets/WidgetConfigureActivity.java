@@ -62,14 +62,14 @@ public class WidgetConfigureActivity extends FragmentActivity
         setContentView(R.layout.activity_configure);
         setResult(RESULT_CANCELED);
 
-        mButtonDark = (RadioButton) findViewById(R.id.radio_dark);
-        mCheckBoxBackground = (CheckBox) findViewById(R.id.checkbox_background);
-        mCheckSearch = (CheckBox) findViewById(R.id.include_search);
-        mCheckVoice = (CheckBox) findViewById(R.id.include_voice);
-        mCheckSmall = (CheckBox) findViewById(R.id.checkbox_small);
-        final TextView backgroundHelp = (TextView) findViewById(R.id.background_help);
-        final TextView smallHelp = (TextView) findViewById(R.id.small_help);
-        Button saveButton = (Button) findViewById(R.id.save_button);
+        mButtonDark = findViewById(R.id.radio_dark);
+        mCheckBoxBackground = findViewById(R.id.checkbox_background);
+        mCheckSearch = findViewById(R.id.include_search);
+        mCheckVoice = findViewById(R.id.include_voice);
+        mCheckSmall = findViewById(R.id.checkbox_small);
+        final TextView backgroundHelp = findViewById(R.id.background_help);
+        final TextView smallHelp = findViewById(R.id.small_help);
+        Button saveButton = findViewById(R.id.save_button);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -192,7 +192,7 @@ public class WidgetConfigureActivity extends FragmentActivity
                 includeVoice);
         editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.SMALL + mAppWidgetId,
                 isSmall);
-        editor.commit();
+        editor.apply();
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);

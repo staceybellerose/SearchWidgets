@@ -1,12 +1,13 @@
 package com.staceybellerose.simplewidgets.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 
@@ -40,18 +41,25 @@ public class AlertDialogFragment extends DialogFragment {
     public AlertDialogFragment() { }
 
     @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof OnDismissListener) {
-            mListener = (OnDismissListener) activity;
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDismissListener) {
+            mListener = (OnDismissListener) context;
         } else {
             throw new RuntimeException("OnDismissListener not implemented in calling activity");
         }
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        int dialogType = getArguments().getInt("dialog_type");
+        Bundle args = getArguments();
+        int dialogType;
+        if (args != null) {
+            dialogType = args.getInt("dialog_type", DIALOG_NO_OPTIONS_SELECTED);
+        } else {
+            dialogType = DIALOG_NO_OPTIONS_SELECTED;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         switch (dialogType) {
             case DIALOG_NO_SEARCH_APP:
@@ -87,7 +95,7 @@ public class AlertDialogFragment extends DialogFragment {
                                     }
                                 });
                 return builder.create();
-            case DIALOG_NO_OPTIONS_SELECTED:
+            default:
                 builder.setTitle(R.string.dialog_nothing_selected_title)
                         .setMessage(R.string.dialog_nothing_selected_message)
                         .setNegativeButton(android.R.string.ok,
@@ -98,8 +106,6 @@ public class AlertDialogFragment extends DialogFragment {
                                     }
                                 });
                 return builder.create();
-            default:
-                return null;
         }
     }
 
