@@ -1,5 +1,4 @@
-Simple Search Widgets
-=====================
+# Simple Search Widgets
 
 ![Build](https://travis-ci.org/staceybellerose/SearchWidgets.svg?branch=master)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/staceybellerose/SearchWidgets/master/LICENSE)
@@ -21,8 +20,11 @@ The app is available for download on Google Play.
 
 <a href='https://play.google.com/store/apps/details?id=com.staceybellerose.simplewidgets&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='323px' height='125px'/></a>
 
-License
-=======
+## Code of Conduct
+
+Help us keep _SearchWidgets_ open and inclusive. Please read and follow our [Code of Conduct](https://github.com/staceybellerose/SearchWidgets/blob/master/CODE_OF_CONDUCT.md).
+
+## License
 
     Copyright 2012-2017 Stacey Adams
 
