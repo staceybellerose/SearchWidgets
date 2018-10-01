@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 public class AlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DIALOG_NO_SEARCH_APP, DIALOG_NO_VOICE_APP, DIALOG_NO_OPTIONS_SELECTED})
-    @interface DialogType { }
+    public @interface DialogType { }
     /**
      * Dialog to display if Global Search is not available
      */
@@ -77,7 +77,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogInterfa
         final int titleId = getTitleId(mDialogType);
         final int messageId = getMessageId(mDialogType);
         @StringRes final int cancelStringId
-                = (mDialogType == DIALOG_NO_VOICE_APP) ? android.R.string.ok : android.R.string.cancel;
+                = (mDialogType == DIALOG_NO_VOICE_APP) ? android.R.string.cancel : android.R.string.ok;
         builder.setTitle(titleId)
                 .setMessage(messageId)
                 .setNegativeButton(cancelStringId, this);

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -148,20 +147,28 @@ public class WidgetConfigureActivity extends AppCompatActivity
      * @return Flag indicating whether the input is valid
      */
     private boolean validateInput() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         // Check for valid intents
         boolean isSearchAvailable = isIntentAvailable(WidgetConfigurator.GLOBAL_SEARCH);
         boolean isVoiceAvailable = isIntentAvailable(WidgetConfigurator.VOICE_SEARCH);
         if (mCheckSearch.isChecked() && !isSearchAvailable) {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_SEARCH_APP).show(fragmentManager);
+            showErrorDialog(AlertDialogFragment.DIALOG_NO_SEARCH_APP);
         } else if (mCheckVoice.isChecked() && !isVoiceAvailable) {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_VOICE_APP).show(fragmentManager);
+            showErrorDialog(AlertDialogFragment.DIALOG_NO_VOICE_APP);
         } else if (!mCheckSearch.isChecked() && !mCheckVoice.isChecked()) {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED).show(fragmentManager);
+            showErrorDialog(AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED);
         } else {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Show an error message alert dialog
+     *
+     * @param type the type of dialog to show
+     */
+    private void showErrorDialog(@AlertDialogFragment.DialogType final int type) {
+        AlertDialogFragment.newInstance(type).show(getSupportFragmentManager());
     }
 
     /**
