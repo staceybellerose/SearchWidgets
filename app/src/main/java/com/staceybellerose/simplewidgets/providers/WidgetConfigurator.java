@@ -57,7 +57,7 @@ public final class WidgetConfigurator {
     /**
      * Configure a widget based on its saved configuration.
      *
-     * @param context The Context in which this receiver is running
+     * @param context     The Context in which this receiver is running
      * @param appWidgetId the ID of the widget to configure
      * @return a RemoteViews view hierarchy
      */
@@ -97,7 +97,7 @@ public final class WidgetConfigurator {
      * Get the appropriate layout ID based on the widget configuration.
      *
      * @param includeSearch Flag to indicate whether to show text search icon
-     * @param includeVoice Flag to indicate whether to show voice search icon
+     * @param includeVoice  Flag to indicate whether to show voice search icon
      * @return a layout ID
      */
     @LayoutRes
@@ -141,7 +141,7 @@ public final class WidgetConfigurator {
      * Get the Search image based on widget configuration
      *
      * @param darkTheme Flag indicating whether to use the Dark theme
-     * @param small Flag indicating whether to use Small icons
+     * @param small     Flag indicating whether to use Small icons
      * @return Drawable Resource ID of the appropriate Search image
      */
     private static int getSearchImage(final boolean darkTheme, final boolean small) {
@@ -160,7 +160,7 @@ public final class WidgetConfigurator {
      * Get the Voice Search image based of widget configuration
      *
      * @param darkTheme Flag indicating whether to use the Dark theme
-     * @param small Flag indicating whether to use Small icons
+     * @param small     Flag indicating whether to use Small icons
      * @return Drawable Resource ID of the appropriate Search image
      */
     private static int getVoiceImage(final boolean darkTheme, final boolean small) {
@@ -182,10 +182,10 @@ public final class WidgetConfigurator {
         /**
          * Delete preferences from a deleted widget.
          *
-         * @param context The Context in which this receiver is running
+         * @param context     The Context in which this receiver is running
          * @param appWidgetId the ID of the widget being deleted
          */
-        public static void delete(final Context context, final int appWidgetId) {
+        static void delete(final Context context, final int appWidgetId) {
             SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sPref.edit();
             editor.remove(WIDGET + THEME + appWidgetId);
@@ -199,44 +199,95 @@ public final class WidgetConfigurator {
         /**
          * Save preferences for a new widget.
          *
-         * @param context The Context in which this receiver is running
+         * @param editor      The shared preferences editor
          * @param appWidgetId the ID of the new widget
-         * @param darkTheme Flag indicating whether the widget uses the dark theme
-         * @param includeBackground Flag indicating whether the widget displays a background
-         * @param includeSearch Flag indicating whether the widget shows the text search icon
-         * @param includeVoice Flag indicating whether the widget shows the voice search icon
-         * @param isSmall Flag indicating whether the widget uses small icons
+         * @param darkTheme   Flag indicating whether the widget uses the dark theme
+         * @return The shared preferences editor
          */
-        @SuppressLint("ApplySharedPref")
-        public static void save(final Context context, final int appWidgetId, final boolean darkTheme,
-                                final boolean includeBackground, final boolean includeSearch,
-                                final boolean includeVoice, final boolean isSmall) {
-            SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = sPref.edit();
-            editor.putBoolean(WIDGET + THEME + appWidgetId, darkTheme);
-            editor.putBoolean(WIDGET + BACKGROUND + appWidgetId, includeBackground);
-            editor.putBoolean(WIDGET + INCLUDE_SEARCH + appWidgetId, includeSearch);
-            editor.putBoolean(WIDGET + INCLUDE_VOICE + appWidgetId, includeVoice);
-            editor.putBoolean(WIDGET + SMALL + appWidgetId, isSmall);
-            // Commit is used rather than apply because these preferences may need to be immediately read
-            editor.commit();
+        public static SharedPreferences.Editor putThemeFlag(final SharedPreferences.Editor editor,
+                                                            final int appWidgetId,
+                                                            final boolean darkTheme) {
+            return editor.putBoolean(WIDGET + THEME + appWidgetId, darkTheme);
+        }
+
+        /**
+         * Save preferences for a new widget.
+         *
+         * @param editor            The shared preferences editor
+         * @param appWidgetId       the ID of the new widget
+         * @param includeBackground Flag indicating whether the widget displays a background
+         * @return The shared preferences editor
+         */
+        public static SharedPreferences.Editor putBackgroundFlag(final SharedPreferences.Editor editor,
+                                                                 final int appWidgetId,
+                                                                 final boolean includeBackground) {
+            return editor.putBoolean(WIDGET + BACKGROUND + appWidgetId, includeBackground);
+        }
+
+        /**
+         * Save preferences for a new widget.
+         *
+         * @param editor        The shared preferences editor
+         * @param appWidgetId   the ID of the new widget
+         * @param includeSearch Flag indicating whether the widget shows the text search icon
+         * @return The shared preferences editor
+         */
+        public static SharedPreferences.Editor putSearchFlag(final SharedPreferences.Editor editor,
+                                                             final int appWidgetId,
+                                                             final boolean includeSearch) {
+            return editor.putBoolean(WIDGET + BACKGROUND + appWidgetId, includeSearch);
+        }
+
+        /**
+         * Save preferences for a new widget.
+         *
+         * @param editor       The shared preferences editor
+         * @param appWidgetId  the ID of the new widget
+         * @param includeVoice Flag indicating whether the widget shows the voice search icon
+         * @return The shared preferences editor
+         */
+        public static SharedPreferences.Editor putVoiceFlag(final SharedPreferences.Editor editor,
+                                                            final int appWidgetId,
+                                                            final boolean includeVoice) {
+            return editor.putBoolean(WIDGET + BACKGROUND + appWidgetId, includeVoice);
+        }
+
+        /**
+         * Save preferences for a new widget.
+         *
+         * @param editor      The shared preferences editor
+         * @param appWidgetId the ID of the new widget
+         * @param isSmall     Flag indicating whether the widget uses small icons
+         * @return The shared preferences editor
+         */
+        public static SharedPreferences.Editor putSmallFlag(final SharedPreferences.Editor editor,
+                                                            final int appWidgetId,
+                                                            final boolean isSmall) {
+            return editor.putBoolean(WIDGET + BACKGROUND + appWidgetId, isSmall);
         }
 
         /**
          * Restore the preferences to a widget restored from backup.
          *
          * @param context The Context in which this receiver is running
-         * @param oldId the widget's old ID
-         * @param newId the widget's new ID
+         * @param oldId   the widget's old ID
+         * @param newId   the widget's new ID
          */
-        public static void restore(final Context context, final int oldId, final int newId) {
+        @SuppressLint("ApplySharedPref")
+        static void restore(final Context context, final int oldId, final int newId) {
             SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sPref.edit();
             boolean darkTheme = sPref.getBoolean(WIDGET + THEME + oldId, true);
             boolean includeBackground = sPref.getBoolean(WIDGET + BACKGROUND + oldId, false);
             boolean includeSearch = sPref.getBoolean(WIDGET + INCLUDE_SEARCH + oldId, false);
             boolean includeVoice = sPref.getBoolean(WIDGET + INCLUDE_VOICE + oldId, false);
             boolean isSmall = sPref.getBoolean(WIDGET + SMALL + oldId, false);
-            save(context, newId, darkTheme, includeBackground, includeSearch, includeVoice, isSmall);
+            putThemeFlag(editor, newId, darkTheme);
+            putBackgroundFlag(editor, newId, includeBackground);
+            putSearchFlag(editor, newId, includeSearch);
+            putVoiceFlag(editor, newId, includeVoice);
+            putSmallFlag(editor, newId, isSmall);
+            editor.commit();
             delete(context, oldId);
         }
     }

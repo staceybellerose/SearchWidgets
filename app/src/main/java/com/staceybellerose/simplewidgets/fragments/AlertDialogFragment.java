@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 public class AlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DIALOG_NO_SEARCH_APP, DIALOG_NO_VOICE_APP, DIALOG_NO_OPTIONS_SELECTED})
-    @interface DialogType {}
+    @interface DialogType { }
     /**
      * Dialog to display if Global Search is not available
      */
@@ -37,6 +37,9 @@ public class AlertDialogFragment extends DialogFragment implements DialogInterfa
      * Dialog to display if no options were selected during setup
      */
     public static final int DIALOG_NO_OPTIONS_SELECTED = 3;
+    /**
+     * Bundle key for dialog type
+     */
     private static final String TYPE = "dialog_type";
 
     /**
@@ -168,6 +171,8 @@ public class AlertDialogFragment extends DialogFragment implements DialogInterfa
     public interface OnDismissListener {
         /**
          * Notify the Activity that the fragment has been dismissed
+         *
+         * @param dialogType the type of dialog
          */
         void onAlertFragmentDismissed(@DialogType int dialogType);
     }

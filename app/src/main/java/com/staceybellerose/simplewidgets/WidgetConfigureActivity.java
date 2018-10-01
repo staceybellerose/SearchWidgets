@@ -3,9 +3,11 @@ package com.staceybellerose.simplewidgets;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -168,9 +170,14 @@ public class WidgetConfigureActivity extends AppCompatActivity
     @SuppressLint("ApplySharedPref")
     private void storeWidgetConfiguration() {
         // Store preferences for widget
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         boolean isSmall = mCheckSmall.isChecked() && mCheckSearch.isChecked() && mCheckVoice.isChecked();
-        WidgetConfigurator.Preferences.save(this, mAppWidgetId, mButtonDark.isChecked(),
-                mCheckBoxBackground.isChecked(), mCheckSearch.isChecked(), mCheckVoice.isChecked(), isSmall);
+        WidgetConfigurator.Preferences.putThemeFlag(editor, mAppWidgetId, mButtonDark.isChecked());
+        WidgetConfigurator.Preferences.putBackgroundFlag(editor, mAppWidgetId, mCheckBoxBackground.isChecked());
+        WidgetConfigurator.Preferences.putSearchFlag(editor, mAppWidgetId, mCheckSearch.isChecked());
+        WidgetConfigurator.Preferences.putVoiceFlag(editor, mAppWidgetId, mCheckVoice.isChecked());
+        WidgetConfigurator.Preferences.putSmallFlag(editor, mAppWidgetId, isSmall);
+        editor.commit();
     }
 
     /**
@@ -190,8 +197,10 @@ public class WidgetConfigureActivity extends AppCompatActivity
 
     /**
      * Close the Activity when the AlertDialogFragment is dismissed
+     *
+     * @param dialogType the dialog type that was displayed
      */
-    public void onAlertFragmentDismissed(int dialogType) {
+    public void onAlertFragmentDismissed(final int dialogType) {
         if (dialogType != AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED) {
             finish();
         }
