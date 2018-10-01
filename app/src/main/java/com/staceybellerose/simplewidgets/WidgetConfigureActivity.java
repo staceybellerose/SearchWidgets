@@ -1,13 +1,11 @@
 package com.staceybellerose.simplewidgets;
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,180 +20,167 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.staceybellerose.simplewidgets.fragments.AlertDialogFragment;
-import com.staceybellerose.simplewidgets.providers.SearchWidgetProvider;
+import com.staceybellerose.simplewidgets.providers.WidgetConfigurator;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Activity to configure a Home Screen Widget
  */
 public class WidgetConfigureActivity extends AppCompatActivity
-        implements AlertDialogFragment.OnDismissListener {
-    /**
-     * The Widget ID to be configured
-     */
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        implements AlertDialogFragment.OnDismissListener, OnCheckedChangeListener, OnClickListener {
 
     /**
      * Radio Button indicating Light or Dark Theme
      */
-    private RadioButton mButtonDark;
+    @BindView(R.id.radio_dark)
+    RadioButton mButtonDark;
     /**
      * Checkbox indicating whether to display a shaded background
      */
-    private CheckBox mCheckBoxBackground;
+    @BindView(R.id.checkbox_background)
+    CheckBox mCheckBoxBackground;
     /**
      * Checkbox indicating whether to display the General Search icon
      */
-    private CheckBox mCheckSearch;
+    @BindView(R.id.include_search)
+    CheckBox mCheckSearch;
     /**
      * Checkbox indicating whether to display the Voice Search icon
      */
-    private CheckBox mCheckVoice;
+    @BindView(R.id.include_voice)
+    CheckBox mCheckVoice;
     /**
      * Checkbox indicating whether to use small icons
      */
-    private CheckBox mCheckSmall;
+    @BindView(R.id.checkbox_small)
+    CheckBox mCheckSmall;
+    /**
+     * The toolbar
+     */
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    /**
+     * The save button
+     */
+    @BindView(R.id.save_button)
+    Button mSaveButton;
+    /**
+     * Help text for background checkbox
+     */
+    @BindView(R.id.background_help)
+    TextView mBackgroundHelp;
+    /**
+     * Help text for small icons checkbox
+     */
+    @BindView(R.id.small_help)
+    TextView mSmallHelp;
+    /**
+     * The Widget ID to be configured
+     */
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
         setResult(RESULT_CANCELED);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        mButtonDark = findViewById(R.id.radio_dark);
-        mCheckBoxBackground = findViewById(R.id.checkbox_background);
-        mCheckSearch = findViewById(R.id.include_search);
-        mCheckVoice = findViewById(R.id.include_voice);
-        mCheckSmall = findViewById(R.id.checkbox_small);
-        final TextView backgroundHelp = findViewById(R.id.background_help);
-        final TextView smallHelp = findViewById(R.id.small_help);
-        Button saveButton = findViewById(R.id.save_button);
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
+        ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
+        getWidgetId();
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
+        mCheckBoxBackground.setOnCheckedChangeListener(this);
+        mCheckSmall.setOnCheckedChangeListener(this);
+        mCheckVoice.setOnCheckedChangeListener(this);
+        mSaveButton.setOnClickListener(this);
+    }
 
-        mCheckBoxBackground.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-                if (isChecked) {
-                    backgroundHelp.setText(R.string.settings_background_help_on);
-                } else {
-                    backgroundHelp.setText(R.string.settings_background_help_off);
-                }
+    @Override
+    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+        if (buttonView == mCheckSmall) {
+            if (isChecked) {
+                mSmallHelp.setText(R.string.settings_small_help_on);
+            } else {
+                mSmallHelp.setText(R.string.settings_small_help_off);
             }
-        });
-
-        mCheckSearch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-                if (isChecked) {
-                    smallHelp.setText(R.string.settings_small_help_on);
-                } else {
-                    smallHelp.setText(R.string.settings_small_help_off);
-                }
+        } else if (buttonView == mCheckBoxBackground) {
+            if (isChecked) {
+                mBackgroundHelp.setText(R.string.settings_background_help_on);
+            } else {
+                mBackgroundHelp.setText(R.string.settings_background_help_off);
             }
-        });
+        }
+    }
 
-        saveButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View view) {
+    @Override
+    public void onClick(final View view) {
+        if (view == mSaveButton) {
+            if (validateInput()) {
+                storeWidgetConfiguration();
                 configureWidget();
             }
-        });
+        }
+    }
+
+    /**
+     * Get the widget ID from the calling intent
+     */
+    private void getWidgetId() {
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        } else {
+            mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        }
+    }
+
+    /**
+     * Validate the input to make sure the widget is displayable
+     *
+     * @return Flag indicating whether the input is valid
+     */
+    private boolean validateInput() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check for valid intents
+        boolean isSearchAvailable = isIntentAvailable(WidgetConfigurator.GLOBAL_SEARCH);
+        boolean isVoiceAvailable = isIntentAvailable(WidgetConfigurator.VOICE_SEARCH);
+        if (mCheckSearch.isChecked() && !isSearchAvailable) {
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_SEARCH_APP).show(fragmentManager);
+        } else if (mCheckVoice.isChecked() && !isVoiceAvailable) {
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_VOICE_APP).show(fragmentManager);
+        } else if (!mCheckSearch.isChecked() && !mCheckVoice.isChecked()) {
+            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED).show(fragmentManager);
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Store the preferences for this widget
+     */
+    @SuppressLint("ApplySharedPref")
+    private void storeWidgetConfiguration() {
+        // Store preferences for widget
+        boolean isSmall = mCheckSmall.isChecked() && mCheckSearch.isChecked() && mCheckVoice.isChecked();
+        WidgetConfigurator.Preferences.save(this, mAppWidgetId, mButtonDark.isChecked(),
+                mCheckBoxBackground.isChecked(), mCheckSearch.isChecked(), mCheckVoice.isChecked(), isSmall);
     }
 
     /**
      * Configure the widget based on the settings selected
      */
     public void configureWidget() {
-        // Read configuration settings
-        boolean darkTheme = mButtonDark.isChecked();
-        boolean includeBackground = mCheckBoxBackground.isChecked();
-        boolean includeSearch = mCheckSearch.isChecked();
-        boolean includeVoice = mCheckVoice.isChecked();
-        boolean isSmall;
+        RemoteViews remoteViews = WidgetConfigurator.configureWidget(this, mAppWidgetId);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        // Check for valid intents
-        boolean isSearchAvailable = isIntentAvailable(SearchWidgetProvider.GLOBAL_SEARCH);
-        boolean isVoiceAvailable = isIntentAvailable(SearchWidgetProvider.VOICE_SEARCH);
-        if (includeSearch && !isSearchAvailable) {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_SEARCH_APP).show(fragmentManager);
-            return;
-        }
-        if (includeVoice && !isVoiceAvailable) {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_VOICE_APP).show(fragmentManager);
-            return;
-        }
-
-        // Configure widget
-        int layout;
-        if (includeSearch && includeVoice) {
-            layout = R.layout.widget_searchvoice;
-            isSmall = mCheckSmall.isChecked();
-        } else if (includeSearch) {
-            layout = R.layout.widget_search;
-            isSmall = false;
-        } else if (includeVoice) {
-            layout = R.layout.widget_voice;
-            isSmall = false;
-        } else {
-            AlertDialogFragment.newInstance(AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED).show(fragmentManager);
-            return;
-        }
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), layout);
-        if (includeSearch) {
-            remoteViews.setImageViewResource(R.id.btn_search,
-                    SearchWidgetProvider.getSearchImage(darkTheme, isSmall));
-            remoteViews.setOnClickPendingIntent(R.id.btn_search,
-                    SearchWidgetProvider.getSearchIntent(this));
-        }
-        if (includeVoice) {
-            remoteViews.setImageViewResource(R.id.btn_voice,
-                    SearchWidgetProvider.getVoiceImage(darkTheme, isSmall));
-            remoteViews.setOnClickPendingIntent(R.id.btn_voice,
-                    SearchWidgetProvider.getVoiceIntent(this));
-        }
-        if (includeBackground) {
-            if (darkTheme) {
-                remoteViews.setViewVisibility(R.id.background_dark, View.VISIBLE);
-                remoteViews.setViewVisibility(R.id.background_light, View.INVISIBLE);
-            } else {
-                remoteViews.setViewVisibility(R.id.background_dark, View.INVISIBLE);
-                remoteViews.setViewVisibility(R.id.background_light, View.VISIBLE);
-            }
-        } else {
-            remoteViews.setViewVisibility(R.id.background_dark, View.INVISIBLE);
-            remoteViews.setViewVisibility(R.id.background_light, View.INVISIBLE);
-        }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         appWidgetManager.updateAppWidget(mAppWidgetId, remoteViews);
-
-        // Store preferences for widget
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Editor editor = sharedPrefs.edit();
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.THEME + mAppWidgetId,
-                darkTheme);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.BACKGROUND + mAppWidgetId,
-                includeBackground);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_SEARCH + mAppWidgetId,
-                includeSearch);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.INCLUDE_VOICE + mAppWidgetId,
-                includeVoice);
-        editor.putBoolean(SearchWidgetProvider.WIDGET + SearchWidgetProvider.SMALL + mAppWidgetId,
-                isSmall);
-        editor.apply();
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
@@ -206,8 +191,10 @@ public class WidgetConfigureActivity extends AppCompatActivity
     /**
      * Close the Activity when the AlertDialogFragment is dismissed
      */
-    public void onAlertFragmentDismissed() {
-        finish();
+    public void onAlertFragmentDismissed(int dialogType) {
+        if (dialogType != AlertDialogFragment.DIALOG_NO_OPTIONS_SELECTED) {
+            finish();
+        }
     }
 
     /**

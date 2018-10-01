@@ -7,16 +7,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 
 import com.staceybellerose.simplewidgets.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Display an error message in a Dialog Fragment
  */
-public class AlertDialogFragment extends DialogFragment {
+public class AlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DIALOG_NO_SEARCH_APP, DIALOG_NO_VOICE_APP, DIALOG_NO_OPTIONS_SELECTED})
+    @interface DialogType {}
     /**
      * Dialog to display if Global Search is not available
      */
@@ -29,11 +37,17 @@ public class AlertDialogFragment extends DialogFragment {
      * Dialog to display if no options were selected during setup
      */
     public static final int DIALOG_NO_OPTIONS_SELECTED = 3;
+    private static final String TYPE = "dialog_type";
 
     /**
      * The Activity including this fragment
      */
     private OnDismissListener mListener;
+    /**
+     * Which dialog type was selected
+     */
+    @DialogType
+    private int mDialogType;
 
     /**
      * Empty Constructor
@@ -54,65 +68,76 @@ public class AlertDialogFragment extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int dialogType;
-        if (args != null) {
-            dialogType = args.getInt("dialog_type", DIALOG_NO_OPTIONS_SELECTED);
-        } else {
-            dialogType = DIALOG_NO_OPTIONS_SELECTED;
-        }
+        //noinspection ResourceType Safe because we created it in newInstance
+        mDialogType = (args != null) ? args.getInt(TYPE, DIALOG_NO_OPTIONS_SELECTED) : DIALOG_NO_OPTIONS_SELECTED;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        switch (dialogType) {
-            case DIALOG_NO_SEARCH_APP:
-                builder.setTitle(R.string.dialog_search_title)
-                        .setMessage(R.string.dialog_search_message)
-                        .setNegativeButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialog, final int which) {
-                                        dismiss();
-                                    }
-                                });
-                return builder.create();
-            case DIALOG_NO_VOICE_APP:
-                builder.setTitle(R.string.dialog_voice_title)
-                        .setMessage(R.string.dialog_voice_message)
-                        .setPositiveButton(R.string.dialog_voice_ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialog, final int which) {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri
-                                                .parse("market://search?q=voice+search&c=apps"));
-                                        startActivity(intent);
-                                        dismiss();
-                                    }
-                                })
-                        .setNegativeButton(android.R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialog, final int which) {
-                                        dismiss();
-                                    }
-                                });
-                return builder.create();
-            default:
-                builder.setTitle(R.string.dialog_nothing_selected_title)
-                        .setMessage(R.string.dialog_nothing_selected_message)
-                        .setNegativeButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialog, final int which) {
-                                        dismiss();
-                                    }
-                                });
-                return builder.create();
+        final int titleId = getTitleId(mDialogType);
+        final int messageId = getMessageId(mDialogType);
+        @StringRes final int cancelStringId
+                = (mDialogType == DIALOG_NO_VOICE_APP) ? android.R.string.ok : android.R.string.cancel;
+        builder.setTitle(titleId)
+                .setMessage(messageId)
+                .setNegativeButton(cancelStringId, this);
+        if (mDialogType == DIALOG_NO_VOICE_APP) {
+            builder.setPositiveButton(R.string.dialog_voice_ok, this);
+        }
+        return builder.create();
+    }
+
+    @Override
+    public void onClick(final DialogInterface dialog, final int which) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://search?q=voice+search&c=apps"));
+            startActivity(intent);
+            dismiss();
+        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+            dismiss();
         }
     }
 
     @Override
     public void onDismiss(final DialogInterface dialog) {
         super.onDismiss(dialog);
-        mListener.onAlertFragmentDismissed();
+        mListener.onAlertFragmentDismissed(mDialogType);
+    }
+
+    /**
+     * Get the title text of the alert dialog based on the dialog type
+     *
+     * @param type the dialog type
+     * @return A string resource ID for the title text
+     */
+    @StringRes
+    private int getTitleId(@DialogType final int type) {
+        switch (type) {
+            case DIALOG_NO_SEARCH_APP:
+                return R.string.dialog_search_title;
+            case DIALOG_NO_VOICE_APP:
+                return R.string.dialog_voice_title;
+            case DIALOG_NO_OPTIONS_SELECTED:
+            default:
+                return R.string.dialog_nothing_selected_title;
+        }
+    }
+
+    /**
+     * Get the message text of the alert dialog based on the dialog type
+     *
+     * @param type the dialog type
+     * @return A string resource ID for the message text
+     */
+    @StringRes
+    private int getMessageId(@DialogType final int type) {
+        switch (type) {
+            case DIALOG_NO_SEARCH_APP:
+                return R.string.dialog_search_message;
+            case DIALOG_NO_VOICE_APP:
+                return R.string.dialog_voice_message;
+            case DIALOG_NO_OPTIONS_SELECTED:
+            default:
+                return R.string.dialog_nothing_selected_message;
+        }
     }
 
     /**
@@ -129,10 +154,10 @@ public class AlertDialogFragment extends DialogFragment {
      * @param type one of Constants.DIALOG_NO_SEARCH_APP or Constants.DIALOG_NO_VOICE_APP
      * @return a new instance of this fragment
      */
-    public static AlertDialogFragment newInstance(final int type) {
+    public static AlertDialogFragment newInstance(@DialogType final int type) {
         AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
         Bundle args = new Bundle();
-        args.putInt("dialog_type", type);
+        args.putInt(TYPE, type);
         alertDialogFragment.setArguments(args);
         return alertDialogFragment;
     }
@@ -144,6 +169,6 @@ public class AlertDialogFragment extends DialogFragment {
         /**
          * Notify the Activity that the fragment has been dismissed
          */
-        void onAlertFragmentDismissed();
+        void onAlertFragmentDismissed(@DialogType int dialogType);
     }
 }

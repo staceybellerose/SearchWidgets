@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="@string/settings_small_help_on"
+                    android:text="@string/settings_small_help_off"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                 <CheckBox
@@ -156,7 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="@string/settings_background_help_on"
+                    android:text="@string/settings_background_help_off"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             </LinearLayout>
